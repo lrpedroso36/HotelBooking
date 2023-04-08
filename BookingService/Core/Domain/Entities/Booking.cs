@@ -9,6 +9,8 @@ public class Booking
     public DateTime PlaceAt { get; set; }
     public DateTime Start { get; set; }
     public DateTime End { get; set; }
+    public Room Room { get; set; }
+    public Guest Guest { get; set; }
     private Status Status { get; set; }
     public Status CurrentStatus { get { return Status; } }
     public void ChangeState(Action action)
@@ -19,7 +21,7 @@ public class Booking
             (Status.Created, Action.Cancel) => Status.Canceled,
             (Status.Paid, Action.Finish) => Status.Finished,
             (Status.Paid, Action.Refound) => Status.Refounded,
-            (Status.Canceled, Action.Refound) => Status.Created,
+            (Status.Canceled, Action.Reopen) => Status.Created,
             _ => Status
         };
     }
