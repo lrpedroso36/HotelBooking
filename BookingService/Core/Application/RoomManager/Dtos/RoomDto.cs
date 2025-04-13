@@ -7,13 +7,13 @@ namespace Application.RoomManager.Dtos;
 public class RoomDto
 {
     public int Id { get; set; }
-    public string Name { get; set; }
+    public string Name { get; set; } = null!;
     public int Level { get; set; }
     public bool InMaintenance { get; set; }
     public decimal Value { get; set; }
     public int Currency { get; set; }
 
-    public static Room MapToEntity(RoomDto room)
+    public static implicit operator Room(RoomDto room)
     {
         return new Room()
         {
@@ -29,7 +29,7 @@ public class RoomDto
         };
     }
 
-    public static RoomDto MapToDTO(Room room)
+    public static implicit operator RoomDto(Room room)
     {
         return new RoomDto()
         {

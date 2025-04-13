@@ -64,7 +64,7 @@ public class RoomController : ControllerBase
         {
             return NotFound(result);
         }
-        else if (result.ErrorCode == ErrorCode.GUEST_COULDNOT_STORE_DATA)
+        else if (result.ErrorCode == ErrorCode.GUEST_COULDNOT_GET_DATA)
         {
             return BadRequest(result);
         }

@@ -13,7 +13,7 @@ public class GuestDto
     public string IdNumber { get; set; } = null!;
     public int Type { get; set; }
 
-    public static implicit operator Guest (GuestDto guest)
+    public static implicit operator Guest(GuestDto guest)
     {
         return new Guest()
         {

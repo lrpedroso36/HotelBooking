@@ -5,5 +5,6 @@ namespace Domain.RoomAggregate.Ports;
 public interface IRoomRepository
 {
     Task<Room> GetAsync(int id);
-    Task<int> CreateAsync(Room room);
+    Task<Room> GetAggregateAsync(int id);
+    Task<Room> CreateAsync(Room room);
 }

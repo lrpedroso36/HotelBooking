@@ -20,8 +20,7 @@ public class Booking
     public DateTime End { get; set; }
     public Room Room { get; set; } = null!;
     public Guest Guest { get; set; } = null!;
-    private Status Status { get; set; }
-    public Status CurrentStatus { get { return Status; } }
+    public Status Status { get; set; }
     public void ChangeState(Action action)
     {
         Status = (Status, action) switch
@@ -38,6 +37,11 @@ public class Booking
     public async Task CreateAsync(IBookingRepository repository)
     {
         ValidateState();
+
+        if (!Room.CanBeBooked())
+        {
+            throw new RoomCannotBeBookedException();
+        }
 
         if (Id == 0)
         {
@@ -67,12 +71,14 @@ public class Booking
             throw new EndInvalidInformationException();
         }
 
-        if (Guest.Id == 0)
+        if (Guest == default)
         {
             throw new GuestInvalidInformationException();
         }
 
-        if (Room.Id == 0)
+        Guest.IsValid();
+
+        if (Room == default)
         {
             throw new RoomInvalidInformationException();
         }

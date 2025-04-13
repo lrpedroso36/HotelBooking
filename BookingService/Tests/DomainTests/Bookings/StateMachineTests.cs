@@ -18,7 +18,7 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Created);
@@ -30,7 +30,7 @@ public class StateMachineTests
         //Arrange
         //Act
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Paid);
@@ -43,7 +43,7 @@ public class StateMachineTests
         //Arrange
         //Act
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Cancel);
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Canceled);
@@ -56,7 +56,7 @@ public class StateMachineTests
         //Act
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Finish);
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Finished);
@@ -69,7 +69,7 @@ public class StateMachineTests
         //Act
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Refound);
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Refounded);
@@ -82,7 +82,7 @@ public class StateMachineTests
         //Act
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Cancel);
         _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Reopen);
-        var currentStatus = _booking.CurrentStatus;
+        var currentStatus = _booking.Status;
 
         //Assert
         currentStatus.Should().Be(Status.Created);

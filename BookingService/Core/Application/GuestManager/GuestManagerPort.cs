@@ -1,10 +1,9 @@
 ﻿using Application.GuestManager.Dtos;
+using Application.GuestManager.Extensions;
 using Application.GuestManager.Ports;
 using Application.GuestManager.Responses;
 using Application.GuestManager.Resquets;
-using Application.Shared.Enumns;
 using Domain.GuestAggregate.Entities;
-using Domain.GuestAggregate.Exceptions;
 using Domain.GuestAggregate.Ports;
 using Domain.Shared.Exceptions;
 
@@ -24,9 +23,7 @@ public class GuestManagerPort : IGuestManagerPort
         try
         {
             Guest guest = request.Data;
-
             await guest.CreateAsync(_repository);
-
             request.Data.Id = guest.Id;
 
             return new GuestResponse()
@@ -35,25 +32,9 @@ public class GuestManagerPort : IGuestManagerPort
                 Success = true
             };
         }
-        catch (InvalidaEmailException)
+        catch (Exception exception)
         {
-            return ResponseError(ErrorCode.GUEST_INVALID_EMAIL, "Email has invalid.");
-        }
-        catch (MinLengthException)
-        {
-            return ResponseError(ErrorCode.GUEST_INVALID_MIN_LENGTH, "Have one or more fields with min length.");
-        }
-        catch (MissingRequiredException)
-        {
-            return ResponseError(ErrorCode.GUEST_MISSING_REQUIRED, "Have one or more missing required fields.");
-        }
-        catch (PersonDocumentException)
-        {
-            return ResponseError(ErrorCode.GUEST_INVALID_PERSON_DOCUMENT, "Person document has invalid.");
-        }
-        catch (Exception)
-        {
-            return ResponseError(ErrorCode.GUEST_COULDNOT_STORE_DATA, "There was an error when saving to DB.");
+            return exception.OnCreate();
         }
     }
 
@@ -73,21 +54,9 @@ public class GuestManagerPort : IGuestManagerPort
                 Data = result
             };
         }
-        catch (NotFoundException)
+        catch (Exception exception)
         {
-            return ResponseError(ErrorCode.GUEST_NOT_FOUND, "Guest not found.");
-        }
-        catch (Exception)
-        {
-            return ResponseError(ErrorCode.GUEST_COULDNOT_STORE_DATA, "There was an error when saving to DB.");
+            return exception.OnGet();
         }
     }
-
-    private static GuestResponse ResponseError(ErrorCode errorCode, string message)
-      => new()
-      {
-          Success = false,
-          ErrorCode = errorCode,
-          Message = message
-      };
 }

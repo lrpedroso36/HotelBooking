@@ -14,6 +14,12 @@ public class Guest
     public string Email { get; set; } = null!;
     public PersonDocument PersonDocument { get; set; } = null!;
 
+    public bool IsValid()
+    {
+        ValidateState();
+        return true;
+    }
+
     private void ValidateState()
     {
         if (string.IsNullOrEmpty(Name) ||
@@ -49,7 +55,8 @@ public class Guest
 
         if (Id == 0)
         {
-            Id = await repository.CreateAsync(this);
+            var result = await repository.CreateAsync(this);
+            Id = result.Id;
         }
     }
 }

@@ -5,5 +5,5 @@ namespace Domain.GuestAggregate.Ports;
 public interface IGuestRepository
 {
     Task<Guest> GetAsync(int id);
-    Task<int> CreateAsync(Guest guest);
+    Task<Guest> CreateAsync(Guest guest);
 }

@@ -1,10 +1,14 @@
+using Application.BookingManager;
+using Application.BookingManager.Ports;
 using Application.GuestManager;
 using Application.GuestManager.Ports;
 using Application.RoomManager;
 using Application.RoomManager.Ports;
 using Data;
+using Data.BookingData;
 using Data.GuestData;
 using Data.RoomData;
+using Domain.BookingAggregate.Ports;
 using Domain.GuestAggregate.Ports;
 using Domain.RoomAggregate.Ports;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +24,9 @@ builder.Services.AddScoped<IGuestManagerPort, GuestManagerPort>();
 
 builder.Services.AddScoped<IRoomRepository, RoomRepository>();
 builder.Services.AddScoped<IRoomManagerPort, RoomManagerPort>();
+
+builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+builder.Services.AddScoped<IBookingManagerPort, BookingManagerPort>();
 
 var connectionString = builder.Configuration.GetConnectionString("Main");
 builder.Services.AddDbContext<HotelDbContext>(opt => opt.UseSqlServer(connectionString));

@@ -1,9 +1,9 @@
 ﻿using Application.GuestManager.Responses;
 using Application.GuestManager.Resquets;
 using Application.RoomManager.Dtos;
+using Application.RoomManager.Extensions;
 using Application.RoomManager.Ports;
-using Application.Shared.Enumns;
-using Domain.RoomAggregate.Exceptions;
+using Domain.RoomAggregate.Entities;
 using Domain.RoomAggregate.Ports;
 using Domain.Shared.Exceptions;
 
@@ -22,11 +22,9 @@ public class RoomManagerPort : IRoomManagerPort
     {
         try
         {
-            var guest = RoomDto.MapToEntity(request.Data);
-
-            await guest.CreateAsync(_repository);
-
-            request.Data.Id = guest.Id;
+            Room room = request.Data;
+            await room.CreateAsync(_repository);
+            request.Data.Id = room.Id;
 
             return new RoomResponse()
             {
@@ -34,21 +32,9 @@ public class RoomManagerPort : IRoomManagerPort
                 Success = true
             };
         }
-        catch (MinLengthException)
+        catch (Exception excetion)
         {
-            return ResponseError(ErrorCode.ROOM_INVALID_MIN_LENGTH, "Have one or more fields with min length.");
-        }
-        catch (MissingRequiredException)
-        {
-            return ResponseError(ErrorCode.ROOM_MISSING_REQUIRED, "Have one or more missing required fields.");
-        }
-        catch (CurrentPrinceException)
-        {
-            return ResponseError(ErrorCode.ROOM_INVALID_CURRENT_PRINCE, "Prince has invalid.");
-        }
-        catch (Exception)
-        {
-            return ResponseError(ErrorCode.ROOM_COULDNOT_STORE_DATA, "There was an error when saving to DB.");
+            return excetion.OnCreate();
         }
     }
 
@@ -61,28 +47,16 @@ public class RoomManagerPort : IRoomManagerPort
             if (quest == null)
                 throw new NotFoundException();
 
-            var result = RoomDto.MapToDTO(quest);
+            RoomDto result = quest;
             return new RoomResponse()
             {
                 Success = true,
                 Data = result
             };
         }
-        catch (NotFoundException)
+        catch (Exception excetion)
         {
-            return ResponseError(ErrorCode.ROOM_NOT_FOUND, "Room not found.");
-        }
-        catch (Exception)
-        {
-            return ResponseError(ErrorCode.ROOM_COULDNOT_STORE_DATA, "There was an error when saving to DB.");
+            return excetion.OnGet();
         }
     }
-
-    private static RoomResponse ResponseError(ErrorCode errorCode, string message)
-      => new()
-      {
-          Success = false,
-          ErrorCode = errorCode,
-          Message = message
-      };
 }

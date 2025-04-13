@@ -1,8 +1,6 @@
-﻿using Application.GuestManager.Dtos;
-using Domain.BookingAggregate.Entities;
+﻿using Domain.BookingAggregate.Entities;
 using Domain.BookingAggregate.Enums;
 using Domain.GuestAggregate.Entities;
-using Domain.GuestAggregate.ValueObjects;
 using Domain.RoomAggregate.Entities;
 
 namespace Application.BookingManager.Dtos;
@@ -29,6 +27,7 @@ public class BookingDto
             Id = booking.Id,
             Start = booking.Start,
             End = booking.End,
+            PlaceAt = booking.PlaceAt,
             Room = new Room() { Id = booking.RoomId },
             Guest = new Guest() { Id = booking.GuestId }
         };
