@@ -4,6 +4,7 @@ using Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Data.Migrations
 {
     [DbContext(typeof(HotelDbContext))]
-    partial class HotelDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241029213133_AddingValueObjectToGuest")]
+    partial class AddingValueObjectToGuest
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,6 +90,10 @@ namespace Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("InMaintenance")
                         .HasColumnType("bit");
 
@@ -128,12 +135,12 @@ namespace Data.Migrations
                             b1.Property<int>("GuestId")
                                 .HasColumnType("int");
 
+                            b1.Property<int>("DocumentType")
+                                .HasColumnType("int");
+
                             b1.Property<string>("IdNumber")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("Type")
-                                .HasColumnType("int");
 
                             b1.HasKey("GuestId");
 
@@ -144,31 +151,6 @@ namespace Data.Migrations
                         });
 
                     b.Navigation("PersonDocument")
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.Room", b =>
-                {
-                    b.OwnsOne("Domain.ValueObjects.Price", "Prince", b1 =>
-                        {
-                            b1.Property<int>("RoomId")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("Currency")
-                                .HasColumnType("int");
-
-                            b1.Property<decimal>("Value")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.HasKey("RoomId");
-
-                            b1.ToTable("Rooms");
-
-                            b1.WithOwner()
-                                .HasForeignKey("RoomId");
-                        });
-
-                    b.Navigation("Prince")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -7,9 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="DomainExceptions\**" />
+    <EmbeddedResource Remove="DomainExceptions\**" />
+    <None Remove="DomainExceptions\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="BookingAggregate\ValueObjects\" />
     <Folder Include="DomainEvents\" />
-    <Folder Include="DomainExceptions\" />
-    <Folder Include="ValueObjects\" />
+    <Folder Include="DomainEvents\" />
   </ItemGroup>
 
 </Project>

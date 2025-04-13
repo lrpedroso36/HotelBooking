@@ -1,5 +1,5 @@
-﻿using Domain.Entities;
-using Domain.Enums;
+﻿using Domain.BookingAggregate.Entities;
+using Domain.BookingAggregate.Enums;
 using FluentAssertions;
 
 namespace DomainTests.Bookings;
@@ -29,7 +29,7 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        _booking.ChangeState(Domain.Enums.Action.Pay);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
         var currentStatus = _booking.CurrentStatus;
 
         //Assert
@@ -42,7 +42,7 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        _booking.ChangeState(Domain.Enums.Action.Cancel);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Cancel);
         var currentStatus = _booking.CurrentStatus;
 
         //Assert
@@ -54,8 +54,8 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        _booking.ChangeState(Domain.Enums.Action.Pay);
-        _booking.ChangeState(Domain.Enums.Action.Finish);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Finish);
         var currentStatus = _booking.CurrentStatus;
 
         //Assert
@@ -67,8 +67,8 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        _booking.ChangeState(Domain.Enums.Action.Pay);
-        _booking.ChangeState(Domain.Enums.Action.Refound);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Pay);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Refound);
         var currentStatus = _booking.CurrentStatus;
 
         //Assert
@@ -80,8 +80,8 @@ public class StateMachineTests
     {
         //Arrange
         //Act
-        _booking.ChangeState(Domain.Enums.Action.Cancel);
-        _booking.ChangeState(Domain.Enums.Action.Reopen);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Cancel);
+        _booking.ChangeState(Domain.BookingAggregate.Enums.Action.Reopen);
         var currentStatus = _booking.CurrentStatus;
 
         //Assert
