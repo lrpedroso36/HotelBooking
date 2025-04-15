@@ -2,6 +2,7 @@ using Application.BookingManager;
 using Application.BookingManager.Ports;
 using Application.GuestManager;
 using Application.GuestManager.Ports;
+using Application.PaymentManager.Ports;
 using Application.RoomManager;
 using Application.RoomManager.Ports;
 using Data;
@@ -12,6 +13,7 @@ using Domain.BookingAggregate.Ports;
 using Domain.GuestAggregate.Ports;
 using Domain.RoomAggregate.Ports;
 using Microsoft.EntityFrameworkCore;
+using Payment.Application.MercadoPago;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +29,8 @@ builder.Services.AddScoped<IRoomManagerPort, RoomManagerPort>();
 
 builder.Services.AddScoped<IBookingRepository, BookingRepository>();
 builder.Services.AddScoped<IBookingManagerPort, BookingManagerPort>();
+
+builder.Services.AddScoped<IMercadoPagoPaymentManagerPort, MercadoPagoPaymentManagerPort>();
 
 var connectionString = builder.Configuration.GetConnectionString("Main");
 builder.Services.AddDbContext<HotelDbContext>(opt => opt.UseSqlServer(connectionString));

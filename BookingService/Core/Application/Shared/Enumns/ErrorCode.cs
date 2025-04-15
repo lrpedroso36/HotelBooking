@@ -30,6 +30,9 @@ public enum ErrorCode
     BOOKING_NOT_FOUND = 207,
     BOOKING_CANNOT_BE_BOOKING = 208,
 
+    //Payment - 300 até 399
+    PAYMENT_INVALID_PAIMENT_INTENTION,
+
     //System
     GENERAL_ERROR = 999
 }
