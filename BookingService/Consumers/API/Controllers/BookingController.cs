@@ -24,6 +24,7 @@ public class BookingController : ControllerBase
 
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(BookingDto))]
+    [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(BookingResponse))]
     [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(BookingResponse))]
     [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(BookingResponse))]
     public async Task<ActionResult> PostAsync([FromBody] BookingDto booking)
@@ -36,9 +37,13 @@ public class BookingController : ControllerBase
             return Created("", result.Data);
         }
 
-        if (!result.Success && result.ErrorCode != ErrorCode.BOOKING_COULDNOT_STORE_DATA || result.ErrorCode != ErrorCode.BOOKING_NOT_FOUND)
+        if (!result.Success && result.ErrorCode != ErrorCode.BOOKING_COULDNOT_STORE_DATA)
         {
             return Conflict(result);
+        }
+        if (!result.Success && result.ErrorCode == ErrorCode.BOOKING_NOT_FOUND)
+        {
+            return NotFound(result);
         }
         else if (result.ErrorCode == ErrorCode.BOOKING_COULDNOT_STORE_DATA)
         {
@@ -90,7 +95,8 @@ public class BookingController : ControllerBase
             return Ok(result.Data);
         }
 
-        if (!result.Success && result.ErrorCode != ErrorCode.PAYMENT_PROVIDER_NOT_IMPLEMENTATION || result.ErrorCode != ErrorCode.PAYMENT_INVALID_PAIMENT_INTENTION)
+        if (!result.Success && result.ErrorCode != ErrorCode.PAYMENT_PROVIDER_NOT_IMPLEMENTATION || 
+                               result.ErrorCode != ErrorCode.PAYMENT_INVALID_PAIMENT_INTENTION)
         {
             return Conflict(result);
         }
