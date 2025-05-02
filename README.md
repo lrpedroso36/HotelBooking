@@ -2,7 +2,7 @@
 
 Neste repositório, você aprenderá como desenvolver aplicações web e microserviços robustos e escaláveis utilizando as técnicas mais modernas do ecossistema .NET. Exploraremos padrões arquiteturais, boas práticas de design de software e abordagens que permitem escrever código altamente testável, coeso e com baixo acoplamento.
 
-## 📘 Conteúdo
+##  Conteúdo
 
 - **Aplicação de conceitos de DDD (Domain-Driven Design)**
   - Utilização de DTOs, Value Objects, Entities e Aggregates
