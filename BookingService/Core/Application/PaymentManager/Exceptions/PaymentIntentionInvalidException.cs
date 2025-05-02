@@ -1,4 +1,4 @@
-﻿namespace Payment.Application.MercadoPago.Exceptions;
+﻿namespace Application.PaymentManager.Exceptions;
 
 public class PaymentIntentionInvalidException : Exception
 {

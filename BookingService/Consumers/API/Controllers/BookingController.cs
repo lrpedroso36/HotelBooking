@@ -2,6 +2,8 @@
 using Application.BookingManager.Ports;
 using Application.BookingManager.Responses;
 using Application.BookingManager.Resquets;
+using Application.PaymentManager.Dtos;
+using Application.PaymentManager.Responses;
 using Application.Shared.Enumns;
 using Microsoft.AspNetCore.Mvc;
 
@@ -73,4 +75,31 @@ public class BookingController : ControllerBase
         return BadRequest(500);
     }
 
+    [HttpPost("{bookingId}/pay")]
+    [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(PaymentResponse))]
+    [ProducesResponseType(StatusCodes.Status409Conflict, Type = typeof(PaymentResponse))]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(PaymentResponse))]
+    public async Task<ActionResult<PaymentResponse>> PayAsync(int bookingId, [FromBody] PaymentRequestDto payment)
+    {
+        payment.BookingId = bookingId;
+
+        var result = await _bookingManager.PayForBooking(payment);
+
+        if (result.Success)
+        {
+            return Ok(result.Data);
+        }
+
+        if (!result.Success && result.ErrorCode != ErrorCode.PAYMENT_PROVIDER_NOT_IMPLEMENTATION || result.ErrorCode != ErrorCode.PAYMENT_INVALID_PAIMENT_INTENTION)
+        {
+            return Conflict(result);
+        }
+        else if (result.ErrorCode == ErrorCode.GENERAL_ERROR)
+        {
+            return BadRequest(result);
+        }
+
+        _logger.LogError("Response with unknown ErrorCode returned.", result);
+        return BadRequest(result);
+    }
 }

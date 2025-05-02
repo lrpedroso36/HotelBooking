@@ -5,9 +5,8 @@ using Domain.Shared.Exceptions;
 
 namespace Application.BookingManager.Extensions;
 
-public static class DomainExceptionExtesions
+public static class BookingExceptionExtesions
 {
-
     public static BookingResponse OnCreate(this Exception exception)
     {
         if (exception is PlaceAtInvalidInformationException)

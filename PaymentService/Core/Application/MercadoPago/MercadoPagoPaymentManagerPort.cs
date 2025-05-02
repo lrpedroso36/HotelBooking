@@ -1,20 +1,17 @@
 ﻿using Application.PaymentManager.Dtos;
 using Application.PaymentManager.Enums;
+using Application.PaymentManager.Exceptions;
 using Application.PaymentManager.Ports;
 using Application.PaymentManager.Responses;
-using Payment.Application.MercadoPago.Exceptions;
 using ApplicationSharedEnumns = Application.Shared.Enumns;
 
 namespace Payment.Application.MercadoPago;
 
-public class MercadoPagoPaymentManagerPort : IMercadoPagoPaymentManagerPort
+public class MercadoPagoPaymentManagerPort : IPaymentProcessor
 {
-    public Task<PaymentResponse> PayBankTransferAsync(string paymentIntention)
-    {
-        throw new NotImplementedException();
-    }
+    public SupportedPaymentProviders Provider { get; set; } = SupportedPaymentProviders.MercadoPago;
 
-    public Task<PaymentResponse> PayWithCreditCardAsyn(string paymentIntention)
+    public Task<PaymentResponse> CapturePaymentAsy(string paymentIntention)
     {
         try
         {
@@ -34,16 +31,6 @@ public class MercadoPagoPaymentManagerPort : IMercadoPagoPaymentManagerPort
             var response = new PaymentResponse() { Success = true, Data = result };
             return Task.FromResult(response);
         }
-        catch (PaymentIntentionInvalidException)
-        {
-            var response = new PaymentResponse()
-            {
-                ErrorCode = ApplicationSharedEnumns.ErrorCode.PAYMENT_INVALID_PAIMENT_INTENTION,
-                Message = "PaymentIntention has invalid."
-            };
-
-            return Task.FromResult(response);
-        }
         catch (Exception exception)
         {
             var response = new PaymentResponse()
@@ -54,10 +41,5 @@ public class MercadoPagoPaymentManagerPort : IMercadoPagoPaymentManagerPort
 
             return Task.FromResult(response);
         }
-    }
-
-    public Task<PaymentResponse> PayWithDebitCardAsync(string paymentIntention)
-    {
-        throw new NotImplementedException();
     }
 }
